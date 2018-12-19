@@ -13,3 +13,13 @@ gridY = 0;
 // Terrain Related var
 type = "node";
 cost = 1;
+
+// PathFinding
+colour = c_white;
+
+// Where the node came from
+parent = noone;
+
+g_score = 0;
+
+moveNode = false;

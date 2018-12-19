@@ -39,4 +39,4 @@ populateNeighbor();
 instance_create_depth(x,y,-3,o_Cursor);
 
 // Create Actor
-actorGen(o_Hero, 5, 5, "James");
+actorGen(o_Hero, 5, 5);

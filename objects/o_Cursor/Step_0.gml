@@ -19,15 +19,26 @@ if(gridX < 0 or gridY < 0 or gridX >= room_width/GRID_SIZE or gridY >= room_heig
 // left mouse click event
 if(mouse_check_button_pressed(mb_left)){
 	if(hoverNode.occupant != noone){
+		
 		selectedActor = hoverNode.occupant;
+		
+		// Give actor 2 action
+		selectedActor.action = 2;
+		
+		// Start pathfinding
+		AStar(hoverNode, selectedActor.move, selectedActor.action);
+		
 	}else{
 		selectedActor = noone;
+	
+		// Clear list
+		wipeNode();
 	}//end if
 }//end if left click
 
 // right mouse click event
 if(mouse_check_button_pressed(mb_right)){
-	if(selectedActor != noone and hoverNode.occupant == noone and hoverNode.passable){
+	if(selectedActor != noone and hoverNode.moveNode){
 		// first clear node of selected actor
 		game_map[# selectedActor.gridX, selectedActor.gridY].occupant = noone;
 		
@@ -40,10 +51,33 @@ if(mouse_check_button_pressed(mb_right)){
 		// Update new node occupant status
 		hoverNode.occupant = selectedActor;
 		
+		// Handle Player action
+		
+		if(hoverNode.g_score > selectedActor.move){
+		
+			// No action remaining
+			selectedActor = noone;
+			wipeNode();
+			
+		} else {
+			
+			selectedActor.action -= 1;
+			
+			// Check to see if actions left
+			if(selectedActor.action > 0){
+				AStar(hoverNode, selectedActor.move, selectedActor.action);
+			} else {
+				selectedActor = noone;
+				wipeNode();
+			}//end if 
+		
+		}//end player action if
+		
 	} else {
 		
 		// Clear selection on invalid action
 		selectedActor = noone;
+		wipeNode();
 	
 	}//end if 
 	
